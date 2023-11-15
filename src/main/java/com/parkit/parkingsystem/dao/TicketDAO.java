@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class TicketDAO {
@@ -88,14 +89,23 @@ public class TicketDAO {
 		}
 		return false;
 	}
-	/*
-	 * public int getNbTicket(String vehicleRegNumber) { Connection con = null; int
-	 * nbTickets = 0; try { con = dataBaseConfig.getConnection(); PreparedStatement
-	 * ps = con.prepareStatement(DBConstants.GET_NB_TICKETS); ps.setString(1,
-	 * vehicleRegNumber); ResultSet rs = ps.executeQuery();
-	 * 
-	 * 
-	 * }catch (Exception ex) { logger.error("Error counting tickets for customer",
-	 * ex); } }
-	 */
+	
+	public int getNbTicket(String vehicleRegNumber) {  
+		int nbTickets = 0;
+		
+		try (Connection con = dataBaseConfig.getConnection(); 
+			 PreparedStatement ps = con.prepareStatement(DBConstants.GET_NB_TICKETS)) { 
+			ps.setString(1, vehicleRegNumber);
+			
+			try (ResultSet rs = ps.executeQuery()) {
+				while(rs.next()) nbTickets++;
+			}
+				
+		}catch (SQLException ex) { 
+			logger.error("Error counting tickets for customer", ex); 
+		}catch (Exception ex) {
+			logger.error("Error connecting to database", ex);
+		}
+		return nbTickets;
+	}
 }
