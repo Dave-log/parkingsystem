@@ -30,7 +30,7 @@ public class TicketDAO {
 			// ps.setInt(1,ticket.getId());
 			ps.setInt(1, ticket.getParkingSpot().getId());
 			ps.setString(2, ticket.getVehicleRegNumber());
-			ps.setDouble(3, ticket.getPrice());
+			ps.setString(3, ticket.getPrice());
 			ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
 			ps.setTimestamp(5, (ticket.getOutTime() == null) ? null : (new Timestamp(ticket.getOutTime().getTime())));
 			return ps.execute();
@@ -77,7 +77,7 @@ public class TicketDAO {
 		try {
 			con = dataBaseConfig.getConnection();
 			PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET);
-			ps.setDouble(1, ticket.getPrice());
+			ps.setString(1, ticket.getPrice());
 			ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
 			ps.setInt(3, ticket.getId());
 			ps.execute();
@@ -89,21 +89,22 @@ public class TicketDAO {
 		}
 		return false;
 	}
-	
-	public int getNbTicket(String vehicleRegNumber) {  
+
+	public int getNbTicket(String vehicleRegNumber) {
 		int nbTickets = 0;
-		
-		try (Connection con = dataBaseConfig.getConnection(); 
-			 PreparedStatement ps = con.prepareStatement(DBConstants.GET_NB_TICKETS)) { 
+
+		try (Connection con = dataBaseConfig.getConnection();
+				PreparedStatement ps = con.prepareStatement(DBConstants.GET_NB_TICKETS)) {
 			ps.setString(1, vehicleRegNumber);
-			
+
 			try (ResultSet rs = ps.executeQuery()) {
-				while(rs.next()) nbTickets++;
+				while (rs.next())
+					nbTickets++;
 			}
-				
-		}catch (SQLException ex) { 
-			logger.error("Error counting tickets for customer", ex); 
-		}catch (Exception ex) {
+
+		} catch (SQLException ex) {
+			logger.error("Error counting tickets for customer", ex);
+		} catch (Exception ex) {
 			logger.error("Error connecting to database", ex);
 		}
 		return nbTickets;

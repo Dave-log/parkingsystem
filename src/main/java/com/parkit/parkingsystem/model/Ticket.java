@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.model;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Ticket {
@@ -34,8 +35,9 @@ public class Ticket {
         this.vehicleRegNumber = vehicleRegNumber;
     }
 
-    public double getPrice() {
-        return price;
+    public String getPrice() {
+    	DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(this.price);
     }
 
     public void setPrice(double price) {

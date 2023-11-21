@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.service;
 
+import com.parkit.parkingsystem.constants.ConstantNumbers;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
@@ -12,11 +13,11 @@ public class FareCalculatorService {
 
 		long inTime = ticket.getInTime().getTime();
 		long outTime = ticket.getOutTime().getTime();
+		
+		double duration = (outTime - inTime) / ConstantNumbers.HOUR_TO_MS_CONVERTER;
+		double discount = hasDiscount ? Fare.DISCOUNT : ConstantNumbers.MULT_NEUTRAL_ELEMENT;
 
-		double duration = (outTime - inTime) / (1000.0 * 60.0 * 60.0);
-		double discount = hasDiscount ? Fare.DISCOUNT : 1.0;
-
-		if (duration >= 0.5) {
+		if (duration >= ConstantNumbers.HALF_HOUR) {
 			switch (ticket.getParkingSpot().getParkingType()) {
 			case CAR: {
 				ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR * discount);
@@ -30,7 +31,7 @@ public class FareCalculatorService {
 				throw new IllegalArgumentException("Unkown Parking Type");
 			}
 		} else {
-			ticket.setPrice(0.0);
+			ticket.setPrice(ConstantNumbers.FREE);
 		}
 	}
 
