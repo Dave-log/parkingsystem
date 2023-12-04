@@ -30,7 +30,7 @@ public class TicketDAO {
 			// ps.setInt(1,ticket.getId());
 			ps.setInt(1, ticket.getParkingSpot().getId());
 			ps.setString(2, ticket.getVehicleRegNumber());
-			ps.setString(3, ticket.getPrice());
+			ps.setBigDecimal(3, ticket.getPrice());
 			ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
 			ps.setTimestamp(5, (ticket.getOutTime() == null) ? null : (new Timestamp(ticket.getOutTime().getTime())));
 			return ps.execute();
@@ -58,7 +58,7 @@ public class TicketDAO {
 				ticket.setParkingSpot(parkingSpot);
 				ticket.setId(rs.getInt(2));
 				ticket.setVehicleRegNumber(vehicleRegNumber);
-				ticket.setPrice(rs.getDouble(3));
+				ticket.setPrice(rs.getBigDecimal(3));
 				ticket.setInTime(rs.getTimestamp(4));
 				ticket.setOutTime(rs.getTimestamp(5));
 			}
@@ -77,13 +77,31 @@ public class TicketDAO {
 		try {
 			con = dataBaseConfig.getConnection();
 			PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET);
-			ps.setString(1, ticket.getPrice());
+			ps.setBigDecimal(1, ticket.getPrice());
 			ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
 			ps.setInt(3, ticket.getId());
 			ps.execute();
+			dataBaseConfig.closePreparedStatement(ps);
 			return true;
 		} catch (Exception ex) {
 			logger.error("Error saving ticket info", ex);
+		} finally {
+			dataBaseConfig.closeConnection(con);
+		}
+		return false;
+	}
+
+	public boolean updateTicketIntime(Ticket ticket) {
+		Connection con = null;
+		try {
+			con = dataBaseConfig.getConnection();
+			PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET_INTIME);
+			ps.setTimestamp(1, new Timestamp(ticket.getInTime().getTime()));
+			ps.setInt(2, ticket.getId());
+			ps.execute();
+			return true;
+		} catch (Exception ex) {
+			logger.error("Error saving ticket intime info", ex);
 		} finally {
 			dataBaseConfig.closeConnection(con);
 		}
@@ -97,9 +115,9 @@ public class TicketDAO {
 				PreparedStatement ps = con.prepareStatement(DBConstants.GET_NB_TICKETS)) {
 			ps.setString(1, vehicleRegNumber);
 
-			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next())
-					nbTickets++;
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				nbTickets = rs.getInt(1);
 			}
 
 		} catch (SQLException ex) {

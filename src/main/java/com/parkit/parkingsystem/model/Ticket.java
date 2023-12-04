@@ -1,13 +1,14 @@
 package com.parkit.parkingsystem.model;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 public class Ticket {
     private int id;
     private ParkingSpot parkingSpot;
     private String vehicleRegNumber;
-    private double price;
+    private BigDecimal price;
     private Date inTime;
     private Date outTime;
 
@@ -35,13 +36,12 @@ public class Ticket {
         this.vehicleRegNumber = vehicleRegNumber;
     }
 
-    public String getPrice() {
-    	DecimalFormat df = new DecimalFormat("0.00");
-        return df.format(this.price);
+    public BigDecimal getPrice() {
+        return this.price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPrice(BigDecimal price) {
+        this.price = price.setScale(2, RoundingMode.HALF_UP);
     }
 
     public Date getInTime() {

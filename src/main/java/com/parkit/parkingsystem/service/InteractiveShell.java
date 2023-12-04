@@ -29,7 +29,11 @@ public class InteractiveShell {
                     break;
                 }
                 case 2: {
-                    parkingService.processExitingVehicle();
+                    try {
+						parkingService.processExitingVehicle();
+					} catch (Exception e) {
+						logger.error("Error when processing vehicle exit",e);
+					}
                     break;
                 }
                 case 3: {
