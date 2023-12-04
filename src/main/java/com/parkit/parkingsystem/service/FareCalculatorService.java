@@ -17,7 +17,7 @@ public class FareCalculatorService {
 
 		long inTime = ticket.getInTime().getTime();
 		long outTime = ticket.getOutTime().getTime();
-		
+
 		BigDecimal durationInMillis = BigDecimal.valueOf(outTime - inTime);
 		BigDecimal millisToHourConverter = BigDecimal.valueOf(TimeUnit.HOURS.toMillis(1));
 		BigDecimal duration = durationInMillis.divide(millisToHourConverter, 2, RoundingMode.HALF_UP);

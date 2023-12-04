@@ -27,21 +27,19 @@ import static org.mockito.Mockito.*;
 public class ParkingServiceTest {
 
 	private static ParkingService parkingService;
-	
+
 	@Mock
 	private static InputReaderUtil inputReaderUtil;
 	@Mock
 	private static ParkingSpotDAO parkingSpotDAO;
 	@Mock
 	private static TicketDAO ticketDAO;
-	//@Mock
-	//private static FareCalculatorService fareCalculatorService;
-	
+
 	private Ticket ticket;
-	
+
 	@BeforeEach
 	private void setUpPerTest() {
-		
+
 		try {
 			ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
 			ticket = new Ticket();
@@ -93,23 +91,7 @@ public class ParkingServiceTest {
         verify(parkingSpotDAO, Mockito.times(0)).updateParking(any(ParkingSpot.class));
         verify(ticketDAO, Mockito.times(0)).saveTicket(any(Ticket.class));
     }
-	
-	/*@Test
-	public void testProcessIncomingVehicle_WithSeveralTickets() throws Exception {
-		
-		String expectedInfoLog = "Happy to see you again! As a regular user of our parking, you will get a 5% discount.";
-		
-		when(inputReaderUtil.readSelection()).thenReturn(1);
-    	when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1);
-    	when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-    	when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);
-    	when(ticketDAO.getNbTicket(anyString())).thenReturn(2);
-    	
-    	parkingService.processIncomingVehicle();
 
-    	assertThat(logCaptor.getInfoLogs()).containsExactly(expectedInfoLog);
-	}*/
-	
 	@Test
     public void testProcessExitingVehicle_UnableUpdate() {
 		
@@ -118,20 +100,7 @@ public class ParkingServiceTest {
     	
     	assertThrows(Exception.class, ()-> parkingService.processExitingVehicle());	
     }
-/*
-	@Test
-	public void testProcessExistingVehicle_WithSeveralTickets() throws Exception {
-		
-		when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-		when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
-		when(ticketDAO.getNbTicket(anyString())).thenReturn(2);
-		when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(true);
-		
-		parkingService.processExitingVehicle();
-		
-		verify(fareCalculatorService, Mockito.times(1)).calculateFare(ticket);
-	}
-*/	
+
 	@Test
     public void testGetNextParkingNumberIfAvailable() {
 		
