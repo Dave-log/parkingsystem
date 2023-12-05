@@ -50,7 +50,6 @@ public class ParkingService {
 				ticket.setVehicleRegNumber(vehicleRegNumber);
 				ticket.setPrice(BigDecimal.ZERO);
 				ticket.setInTime(inTime);
-				ticket.setOutTime(null);
 				ticketDAO.saveTicket(ticket);
 				logger.info("Generated Ticket and saved in DB");
 				logger.info("Please park your vehicle in spot number:" + parkingSpot.getId());
@@ -92,16 +91,16 @@ public class ParkingService {
 		logger.info("2 BIKE");
 		int input = inputReaderUtil.readSelection();
 		switch (input) {
-		case 1: {
-			return ParkingType.CAR;
-		}
-		case 2: {
-			return ParkingType.BIKE;
-		}
-		default: {
-			logger.info("Incorrect input provided");
-			throw new IllegalArgumentException("Entered input is invalid");
-		}
+			case 1: {
+				return ParkingType.CAR;
+			}
+			case 2: {
+				return ParkingType.BIKE;
+			}
+			default: {
+				logger.info("Incorrect input provided");
+				throw new IllegalArgumentException("Entered input is invalid");
+			}
 		}
 	}
 

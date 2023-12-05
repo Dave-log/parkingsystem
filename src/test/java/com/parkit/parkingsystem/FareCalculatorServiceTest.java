@@ -89,6 +89,23 @@ public class FareCalculatorServiceTest {
 	}
 
 	@Test
+	public void calculateFareBikeWithMoreThanOneHourParkingTime() {
+		Date inTime = new Date();
+		inTime.setTime(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(3));
+		Date outTime = new Date();
+		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
+
+		ticket.setInTime(inTime);
+		ticket.setOutTime(outTime);
+		ticket.setParkingSpot(parkingSpot);
+		fareCalculatorService.calculateFare(ticket);
+
+		BigDecimal expected = (Fare.BIKE_RATE_PER_HOUR).multiply(new BigDecimal("3.00"));
+		expected = expected.setScale(2, RoundingMode.HALF_UP);
+		assertEquals(expected, ticket.getPrice());
+	}
+
+	@Test
 	public void calculateFareBikeWithLessThanOneHourParkingTime() {
 		Date inTime = new Date();
 		inTime.setTime(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(45));
@@ -102,6 +119,23 @@ public class FareCalculatorServiceTest {
 		fareCalculatorService.calculateFare(ticket);
 
 		BigDecimal expected = (Fare.BIKE_RATE_PER_HOUR).multiply(new BigDecimal("0.75"));
+		expected = expected.setScale(2, RoundingMode.HALF_UP);
+		assertEquals(expected, ticket.getPrice());
+	}
+
+	@Test
+	public void calculateFareCarWithMoreThanOneHourParkingTime() {
+		Date inTime = new Date();
+		inTime.setTime(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(3));
+		Date outTime = new Date();
+		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+
+		ticket.setInTime(inTime);
+		ticket.setOutTime(outTime);
+		ticket.setParkingSpot(parkingSpot);
+		fareCalculatorService.calculateFare(ticket);
+
+		BigDecimal expected = (Fare.CAR_RATE_PER_HOUR).multiply(new BigDecimal("3.00"));
 		expected = expected.setScale(2, RoundingMode.HALF_UP);
 		assertEquals(expected, ticket.getPrice());
 	}

@@ -10,8 +10,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.release>21</maven.compiler.release>
 	</properties>
 
 	<dependencies>
@@ -49,12 +48,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jacoco</groupId>
-			<artifactId>jacoco-maven-plugin</artifactId>
-			<version>0.8.11</version>
-			<type>maven-plugin</type>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-assembly-plugin</artifactId>
 			<version>3.3.0</version>
@@ -74,6 +67,11 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -101,8 +99,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.0</version>
+				<version>3.2.2</version>
 				<configuration>
+					<argLine>
+						@{argLine} -XX:+EnableDynamicAgentLoading
+					</argLine>
 					<excludes>
 						<exclude>**/*IT.java</exclude>
 					</excludes>

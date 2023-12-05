@@ -44,4 +44,5 @@ public class FareCalculatorService {
 	public void calculateFare(Ticket ticket) {
 		calculateFare(ticket, false);
 	}
+
 }

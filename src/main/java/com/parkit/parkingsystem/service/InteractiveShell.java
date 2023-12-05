@@ -37,7 +37,7 @@ public class InteractiveShell {
 				break;
 			}
 			case 3: {
-				System.out.println("Exiting from the system!");
+				logger.info("Exiting from the system!");
 				continueApp = false;
 				break;
 			}

@@ -114,8 +114,4 @@ public class ParkingDataBaseIT {
 		assertThat(newTicket.getPrice()).isEqualTo(expected);
 	}
 
-	@AfterAll
-	private static void tearDown() {
-
-	}
 }
