@@ -133,6 +133,7 @@
 				<configuration>
 					<excludes>
 						<exclude>**/constants/*.class</exclude>
+						<exclude>**/model/*.class</exclude>
 					</excludes>
 				</configuration>
 				<executions>

@@ -22,7 +22,7 @@ public class InputReaderUtil {
 		}
 	}
 
-	public String readVehicleRegistrationNumber() throws Exception {
+	public String readVehicleRegistrationNumber() {
 		scan = new Scanner(System.in);
 		try {
 			String vehicleRegNumber = scan.nextLine();

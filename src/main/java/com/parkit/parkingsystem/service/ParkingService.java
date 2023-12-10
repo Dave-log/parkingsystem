@@ -29,12 +29,11 @@ public class ParkingService {
 		this.ticketDAO = ticketDAO;
 	}
 
-	public void processIncomingVehicle() {
-		try {
-			ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
-			if (parkingSpot != null && parkingSpot.getId() > 0) {
-				String vehicleRegNumber = getVehicleRegNumber();
-				parkingSpot.setAvailable(false);
+	public void processIncomingVehicle() throws IllegalArgumentException {
+		ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
+		if (parkingSpot != null && parkingSpot.getId() > 0) {
+			String vehicleRegNumber = getVehicleRegNumber();
+			parkingSpot.setAvailable(false);
 				parkingSpotDAO.updateParking(parkingSpot);// allot this parking space and mark it's availability as
 															// false
 
@@ -54,14 +53,10 @@ public class ParkingService {
 				logger.info("Generated Ticket and saved in DB");
 				logger.info("Please park your vehicle in spot number:" + parkingSpot.getId());
 				logger.info("Recorded in-time for vehicle number:" + vehicleRegNumber + " is:" + inTime);
-			}
-		} catch (Exception e) {
-			logger.error("Unable to process incoming vehicle", e);
-			throw new IllegalArgumentException(e);
 		}
 	}
 
-	private String getVehicleRegNumber() throws Exception {
+	private String getVehicleRegNumber() {
 		logger.info("Please type the vehicle registration number and press enter key");
 		return inputReaderUtil.readVehicleRegistrationNumber();
 	}
@@ -90,18 +85,14 @@ public class ParkingService {
 		logger.info("1 CAR");
 		logger.info("2 BIKE");
 		int input = inputReaderUtil.readSelection();
-		switch (input) {
-			case 1: {
-				return ParkingType.CAR;
-			}
-			case 2: {
-				return ParkingType.BIKE;
-			}
-			default: {
+		return switch (input) {
+			case 1 -> ParkingType.CAR;
+			case 2 -> ParkingType.BIKE;
+			default -> {
 				logger.info("Incorrect input provided");
-				throw new IllegalArgumentException("Entered input is invalid");
+				throw new IllegalArgumentException("Unexpected value: " + input);
 			}
-		}
+		};
 	}
 
 	public void processExitingVehicle() throws Exception {
