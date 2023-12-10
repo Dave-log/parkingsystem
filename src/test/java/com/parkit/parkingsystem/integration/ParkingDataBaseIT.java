@@ -77,7 +77,7 @@ public class ParkingDataBaseIT {
 		Ticket ticket = ticketDAO.getTicket(vehicleRegNumberTest);
 		ticket.setInTime(
 				new Date(ticketDAO.getTicket(vehicleRegNumberTest).getInTime().getTime() - TimeUnit.HOURS.toMillis(1)));
-		ticketDAO.updateTicketIntime(ticket);
+		ticketDAO.updateTicketInTime(ticket);
 
 		parkingService.processExitingVehicle();
 		ticket = ticketDAO.getTicket(vehicleRegNumberTest);
@@ -95,7 +95,7 @@ public class ParkingDataBaseIT {
 		Ticket firstTicket = ticketDAO.getTicket(vehicleRegNumberTest);
 		firstTicket.setInTime(
 				new Date(ticketDAO.getTicket(vehicleRegNumberTest).getInTime().getTime() - TimeUnit.HOURS.toMillis(1)));
-		ticketDAO.updateTicketIntime(firstTicket);
+		ticketDAO.updateTicketInTime(firstTicket);
 		parkingService.processExitingVehicle();
 		firstTicket = ticketDAO.getTicket(vehicleRegNumberTest);
 
@@ -104,7 +104,7 @@ public class ParkingDataBaseIT {
 		Ticket newTicket = ticketDAO.getTicket(vehicleRegNumberTest);
 		newTicket.setInTime(
 				new Date(ticketDAO.getTicket(vehicleRegNumberTest).getInTime().getTime() - TimeUnit.HOURS.toMillis(1)));
-		ticketDAO.updateTicketIntime(newTicket);
+		ticketDAO.updateTicketInTime(newTicket);
 		parkingService.processExitingVehicle();
 		newTicket = ticketDAO.getTicket(vehicleRegNumberTest);
 
