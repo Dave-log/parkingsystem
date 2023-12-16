@@ -21,7 +21,7 @@ public class FareCalculatorService {
 		BigDecimal durationInMillis = BigDecimal.valueOf(outTime - inTime);
 		BigDecimal millisToHourConverter = BigDecimal.valueOf(TimeUnit.HOURS.toMillis(1));
 		BigDecimal duration = durationInMillis.divide(millisToHourConverter, 2, RoundingMode.HALF_UP);
-		BigDecimal discount = hasDiscount ? Fare.DISCOUNT : ConstantNumbers.MULT_NEUTRAL_ELEMENT;
+		BigDecimal discount = hasDiscount ? Fare.DISCOUNT : ConstantNumbers.ONE;
 
 		if (duration.compareTo(ConstantNumbers.HALF_HOUR) >= 0) {
 			switch (ticket.getParkingSpot().getParkingType()) {
