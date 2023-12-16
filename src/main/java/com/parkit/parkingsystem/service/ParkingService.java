@@ -34,25 +34,24 @@ public class ParkingService {
 		if (parkingSpot != null && parkingSpot.getId() > 0) {
 			String vehicleRegNumber = getVehicleRegNumber();
 			parkingSpot.setAvailable(false);
-				parkingSpotDAO.updateParking(parkingSpot);// allot this parking space and mark it's availability as
-															// false
+			parkingSpotDAO.updateParking(parkingSpot);// update this parking space and mark it's availability as
+														// false
 
-				int nbTickets = ticketDAO.getNbTicket(vehicleRegNumber);
-				if (nbTickets > 0) {
-					logger.info(
-							"Happy to see you again! As a regular user of our parking, you will get a 5% discount.");
-				}
+			int nbTickets = ticketDAO.getNbTicket(vehicleRegNumber);
+			if (nbTickets > 0) {
+				logger.info("Happy to see you again! As a regular user of our parking, you will get a 5% discount.");
+			}
 
-				Date inTime = new Date();
-				Ticket ticket = new Ticket();
-				ticket.setParkingSpot(parkingSpot);
-				ticket.setVehicleRegNumber(vehicleRegNumber);
-				ticket.setPrice(BigDecimal.ZERO);
-				ticket.setInTime(inTime);
-				ticketDAO.saveTicket(ticket);
-				logger.info("Generated Ticket and saved in DB");
-				logger.info("Please park your vehicle in spot number:" + parkingSpot.getId());
-				logger.info("Recorded in-time for vehicle number:" + vehicleRegNumber + " is:" + inTime);
+			Date inTime = new Date();
+			Ticket ticket = new Ticket();
+			ticket.setParkingSpot(parkingSpot);
+			ticket.setVehicleRegNumber(vehicleRegNumber);
+			ticket.setPrice(BigDecimal.ZERO);
+			ticket.setInTime(inTime);
+			ticketDAO.saveTicket(ticket);
+			logger.info("Generated Ticket and saved in DB");
+			logger.info("Please park your vehicle in spot number:" + parkingSpot.getId());
+			logger.info("Recorded in-time for vehicle number:" + vehicleRegNumber + " is:" + inTime);
 		}
 	}
 
@@ -86,12 +85,12 @@ public class ParkingService {
 		logger.info("2 BIKE");
 		int input = inputReaderUtil.readSelection();
 		return switch (input) {
-			case 1 -> ParkingType.CAR;
-			case 2 -> ParkingType.BIKE;
-			default -> {
-				logger.info("Incorrect input provided");
-				throw new IllegalArgumentException("Unexpected value: " + input);
-			}
+		case 1 -> ParkingType.CAR;
+		case 2 -> ParkingType.BIKE;
+		default -> {
+			logger.info("Incorrect input provided");
+			throw new IllegalArgumentException("Unexpected value: " + input);
+		}
 		};
 	}
 
